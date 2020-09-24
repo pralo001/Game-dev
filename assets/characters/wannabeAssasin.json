@@ -1,0 +1,11 @@
+{
+    "model":"",
+    "speed": 3,
+    "strength": 2,
+    "maxHealth": 90,
+
+    "abilities":{
+        "ability1": "" ,
+        "ability2": ""
+    }
+}
