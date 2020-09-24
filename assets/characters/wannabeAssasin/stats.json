@@ -1,8 +1,7 @@
 {
-    "model":"",
-    "speed": 1,
-    "strength": 1,
-    "maxHealth": 69,
+    "speed": 3,
+    "strength": 2,
+    "maxHealth": 90,
 
     "abilities":{
         "ability1": "" ,
