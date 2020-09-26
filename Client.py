@@ -1,7 +1,6 @@
 from PodSixNet.Connection import connection,ConnectionListener
 from time import sleep
 import pygame
-from _thread import *
 from PodSixNet.Connection import connection,ConnectionListener
 pygame.init()
 rect_list = []
