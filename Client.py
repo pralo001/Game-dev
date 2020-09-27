@@ -1,6 +1,7 @@
 from PodSixNet.Connection import connection,ConnectionListener
 from time import sleep
 import pygame
+from _thread import *
 from PodSixNet.Connection import connection,ConnectionListener
 pygame.init()
 rect_list = []
@@ -9,6 +10,8 @@ clock1 = pygame.time.Clock()
 done = False
 right = False
 left = False
+up = False
+down = False
 class Rectangle:
     def __init__(self,x = 50,y = 50,width = 40, height = 60, colour = (255,0,0)):
         self.x = x
@@ -16,7 +19,7 @@ class Rectangle:
         self.colour = colour
         self.width = width
         self.height = height
-
+ 
 class Client(ConnectionListener):
     def Network_colour(self,data):
         global col
@@ -31,12 +34,15 @@ class Client(ConnectionListener):
                    r.x = data['x']
                 if data['colour'] != col:
                     r.x = data['x']
-                r.y = data['y']
+                if (down and r.y <= data['y']) or (up and r.y >= data['y']) and data['colour'] == col:
+                   r.y = data['y']
+                if data['colour'] != col:
+                    r.y = data['y']
                 done = True
             if not done:
                 rect_list.append(Rectangle(data['x'],data['y'],40,60,data['colour']))
-              
-            
+ 
+ 
 c = Client()
 c.Connect(('localhost',12345))
 win = pygame.display.set_mode((500,500))
@@ -49,11 +55,12 @@ while run:
     keys = pygame.key.get_pressed()
     right = False
     left = False
+    up = False
+    down = False
     if keys[pygame.K_RIGHT]:
       right = True
       for r in rect_list:
         if r.colour == col:
-            if not left:
                 r.x += vel
     if keys[pygame.K_LEFT]:
         left = True
@@ -62,6 +69,18 @@ while run:
                 r.x -= vel
     if left and right:
         left = right = False
+    if keys[pygame.K_UP]:
+        up = True
+        for r in rect_list:
+            if r.colour == col:
+                r.y -= vel
+    if keys[pygame.K_DOWN]:
+        down = True
+        for r in rect_list:
+            if r.colour == col:
+                r.y += vel
+    if up and down:
+        up = down = False
     win.fill((0,0,0))
     for r in rect_list:
         pygame.draw.rect(win,r.colour,(r.x,r.y,r.width,r.height))
