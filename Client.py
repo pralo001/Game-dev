@@ -39,8 +39,8 @@ class Client(ConnectionListener):
                 if data['colour'] != col:
                     r.y = data['y']
                 done = True
-            if not done:
-                rect_list.append(Rectangle(data['x'],data['y'],40,60,data['colour']))
+        if not done:
+               rect_list.append(Rectangle(data['x'],data['y'],40,60,data['colour']))
  
  
 c = Client()
