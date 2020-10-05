@@ -12,6 +12,8 @@ right = False
 left = False
 up = False
 down = False
+name = input('Enter name: ')
+game_id = int(input('Enter game id: '))
 class Rectangle:
     def __init__(self,x = 50,y = 50,width = 40, height = 60, colour = (255,0,0)):
         self.x = x
@@ -21,6 +23,9 @@ class Rectangle:
         self.height = height
  
 class Client(ConnectionListener):
+    def Network_init(self,data):
+        self.ch = data['ch']
+        self.Send({'action' : 'connect' , 'channel' : data['ch'] , 'name' : name , 'game_id' :game_id})
     def Network_colour(self,data):
         global col
         col = data['col']
@@ -40,11 +45,12 @@ class Client(ConnectionListener):
                     r.y = data['y']
                 done = True
         if not done:
-               rect_list.append(Rectangle(data['x'],data['y'],40,60,data['colour']))
+            rect_list.append(Rectangle(data['x'],data['y'],40,60,data['colour']))
  
  
 c = Client()
-c.Connect(('localhost',12345))
+ip = '169.254.204.80'
+c.Connect((ip,12345))
 win = pygame.display.set_mode((500,500))
 run = True
 while run:
@@ -87,7 +93,7 @@ while run:
     pygame.display.update()
     for rct in rect_list:
       if rct.colour == col:
-        c.Send({'action': 'rect', 'x' : rct.x, 'y': rct.y , 'colour' : rct.colour})
+        c.Send({'action': 'rect', 'x' : rct.x, 'y': rct.y , 'colour' : rct.colour,'game_id' : game_id})
     connection.Pump()
     c.Pump()
 pygame.quit()
