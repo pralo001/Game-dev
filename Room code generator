@@ -1,0 +1,15 @@
+import random
+import string
+
+length = random.randint(4,6)
+code = ""
+
+nums = list(range(10))
+alphs = list(string.ascii_uppercase)
+
+chars = alphs + nums
+
+for i in range(length):
+  code += str(random.choice(chars))
+
+#print(code)
